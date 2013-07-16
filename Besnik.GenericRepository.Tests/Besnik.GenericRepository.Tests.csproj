@@ -97,13 +97,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Factory\Factory.cs" />
-    <Compile Include="Fixtures\EntityFrameworkFixtures\EntityFrameworkCustomerRepositoryFixture.cs" />
+    <Compile Include="Fixtures\EntityFrameworkFixtures\EntityFrameworkDynamicCustomerRepositoryFixture.cs" />
+    <Compile Include="Fixtures\EntityFrameworkFixtures\EntityFrameworkStaticCustomerRepositoryFixture.cs" />
     <Compile Include="Fixtures\GenericFixtures\BaseUnitOfWorkFixture.cs" />
     <Compile Include="Fixtures\GenericFixtures\GenericCustomerRepositoryFixture.cs" />
     <Compile Include="Fixtures\LinqToSqlFixtures\LinqToSqlCustomerRepositoryFixture.cs" />
     <Compile Include="Fixtures\NHibernateFixtures\NHibernateCriteriaFixture.cs" />
     <Compile Include="Fixtures\NHibernateFixtures\NHibernateUnitOfWorkFixture.cs" />
     <Compile Include="Fixtures\NHibernateFixtures\NHibernateCustomerRepositoryFixture.cs" />
+    <Compile Include="Migrations\201307161158274_AddCustomerTable.cs" />
+    <Compile Include="Migrations\201307161158274_AddCustomerTable.Designer.cs">
+      <DependentUpon>201307161158274_AddCustomerTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\EntityFrameworkMigrationConfiguration.cs" />
+    <Compile Include="Mocks\EntityFramework\EntityFrameworkCustomerDbContext.cs" />
     <Compile Include="Mocks\SpecificationLocatorStub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -176,6 +183,11 @@
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201307161158274_AddCustomerTable.resx">
+      <DependentUpon>201307161158274_AddCustomerTable.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,32 +8,14 @@ namespace Besnik.GenericRepository.EntityFramework
     /// Unit of work factory implementation for Entity Framework.
     /// Note: implementation based on extension Feature CTP4.
     /// </summary>
-    public class EntityFrameworkUnitOfWorkFactory : IUnitOfWorkFactory
+    public abstract class EntityFrameworkUnitOfWorkFactory : IUnitOfWorkFactory
     {
-        public EntityFrameworkUnitOfWorkFactory(string connectionString, DbModel dbModel)
-        {
-            this.ConnectionString = connectionString;
-			this.DbModel = dbModel;
-        }
-
-        protected string ConnectionString { get; private set; }
-
-		protected DbModel DbModel { get; private set; }
-
         public IUnitOfWork BeginUnitOfWork()
         {
 			return new EntityFrameworkUnitOfWork(
 				this.CreateDbContext()
 				);
         }
-
-		private DbContext CreateDbContext()
-		{
-			return new DbContext(
-				this.ConnectionString
-				, this.DbModel.Compile()
-				);
-		}
 
         public void EndUnitOfWork(IUnitOfWork unitOfWork)
         {
@@ -45,10 +27,7 @@ namespace Besnik.GenericRepository.EntityFramework
 			}
         }
 
-        public void Dispose()
-        {
-			this.ConnectionString = null;
-			this.DbModel = null;
-        }
-	}
+        protected abstract DbContext CreateDbContext();
+        public abstract void Dispose();
+    }
 }

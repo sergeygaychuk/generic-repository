@@ -9,7 +9,8 @@ namespace Besnik.Domain.EntityFramework
 		/// Constructor.
 		/// </summary>
 		/// <remarks>
-		/// Make sure to update also EntityFrameworkCustomerRepositoryFixture.cs
+        /// Make sure to update also EntityFrameworkStaticCustomerRepositoryFixture.cs
+		/// and EntityFrameworkDynamicCustomerRepositoryFixture.cs
 		/// and InitializeDataStorage() method that clears db before each test.
 		/// </remarks>
 		public CustomerConfiguration()
