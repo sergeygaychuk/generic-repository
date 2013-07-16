@@ -50,7 +50,7 @@ namespace Besnik.GenericRepository.LinqToSql
 			// Attach with "true" to say this is a modified entity
 			// and it can be checked for optimistic concurrency because
 			// it has a column that is marked with "RowVersion" attribute
-			this.GetTable<TEntity>().Attach(entity, true);
+			this.GetTable<TEntity>().Attach(entity);//, true); - For EntityFramework attach work as not modified
 		}
 
 		public void Delete<TEntity>(TEntity entity) where TEntity : class
