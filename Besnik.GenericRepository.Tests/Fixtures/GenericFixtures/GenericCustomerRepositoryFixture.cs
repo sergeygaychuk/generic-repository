@@ -187,6 +187,88 @@ namespace Besnik.GenericRepository.Tests
 			}
 		}
 
+
+        /// <summary>
+        /// Template test method for update customer into repository.
+        /// </summary>
+        [Test]
+        public void UpdateAttachedItemInRepository_ExplicitFlush()
+        {
+            // arrange
+            AddItemToRepository_ExplicitFlush();
+            Customer c = null;
+
+            //act
+            using (var unitOfWork = this.UnitOfWorkFactory.BeginUnitOfWork())
+            {
+                ICustomerRepository cr = this.CreateCustomerRepository(unitOfWork);
+                c = cr.Specify<ICustomerSpecification>()
+                    .ToResult()
+                    .Single();
+
+                c.Name = String.Format("{0}_test", Factory.DefaultCustomerName);
+
+                unitOfWork.Flush();
+            }
+
+            //assert
+            using (var unitOfWork = this.UnitOfWorkFactory.BeginUnitOfWork())
+            {
+                var customerFromDb = this.GetCustomer(c.Id, unitOfWork);
+
+                Assert.That(customerFromDb, Is.Not.Null);
+                Assert.That(customerFromDb, Is.Not.SameAs(c));
+                Assert.That(customerFromDb.Name, Is.EqualTo(c.Name));
+                Assert.That(customerFromDb.Age, Is.EqualTo(c.Age));
+            }
+        }
+
+
+        /// <summary>
+        /// Template test method for update customer into repository.
+        /// </summary>
+        [Test]
+        public void UpdateNotAttachedItemInRepository_ExplicitFlush()
+        {
+            // arrange
+            AddItemToRepository_ExplicitFlush();
+            Customer c = null;
+            using (var unitOfWork = this.UnitOfWorkFactory.BeginUnitOfWork())
+            {
+                ICustomerRepository cr = this.CreateCustomerRepository(unitOfWork);
+                var cDB = cr.Specify<ICustomerSpecification>()
+                    .ToResult()
+                    .Single();
+                c = new Customer
+                    {
+                        Id = cDB.Id,
+                        Age = cDB.Age,
+                        Name = cDB.Name
+                    };
+            }
+
+            //act
+            using (var unitOfWork = this.UnitOfWorkFactory.BeginUnitOfWork())
+            {
+                ICustomerRepository cr = this.CreateCustomerRepository(unitOfWork);
+                cr.Update(c);
+
+                c.Name = String.Format("{0}_test", Factory.DefaultCustomerName);
+                unitOfWork.Flush();
+            }
+
+            //assert
+            using (var unitOfWork = this.UnitOfWorkFactory.BeginUnitOfWork())
+            {
+                var customerFromDb = this.GetCustomer(c.Id, unitOfWork);
+
+                Assert.That(customerFromDb, Is.Not.Null);
+                Assert.That(customerFromDb, Is.Not.SameAs(c));
+                Assert.That(customerFromDb.Name, Is.EqualTo(c.Name));
+                Assert.That(customerFromDb.Age, Is.EqualTo(c.Age));
+            }
+        }
+
 		/// <summary>
 		/// Template test method for adding customer into repository.
 		/// </summary>
